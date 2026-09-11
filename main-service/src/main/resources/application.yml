@@ -1,6 +1,6 @@
 spring:
   application:
-    name: hospital-management
+    name: main-service
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:15432/hospital_db}
     username: ${SPRING_DATASOURCE_USERNAME:hospital_user}
@@ -17,4 +17,4 @@ springdoc:
     path: /swagger-ui.html
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8081}

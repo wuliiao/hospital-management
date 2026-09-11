@@ -16,16 +16,57 @@ services:
       timeout: 3s
       retries: 10
 
-  app:
-    build: .
-    container_name: hospital-app
+  main-service:
+    build:
+      context: .
+      args:
+        MODULE: main-service
+    container_name: hospital-main-service
     depends_on:
       db:
         condition: service_healthy
     environment:
+      SERVER_PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/hospital_db
       SPRING_DATASOURCE_USERNAME: hospital_user
       SPRING_DATASOURCE_PASSWORD: hospital_password
+    ports:
+      - "8081:8081"
+
+  report-service:
+    build:
+      context: .
+      args:
+        MODULE: report-service
+    container_name: hospital-report-service
+    depends_on:
+      db:
+        condition: service_healthy
+      main-service:
+        condition: service_started
+    environment:
+      SERVER_PORT: 8082
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/hospital_db
+      SPRING_DATASOURCE_USERNAME: hospital_user
+      SPRING_DATASOURCE_PASSWORD: hospital_password
+    ports:
+      - "8082:8082"
+
+  gateway-service:
+    build:
+      context: .
+      args:
+        MODULE: gateway-service
+    container_name: hospital-gateway-service
+    depends_on:
+      main-service:
+        condition: service_started
+      report-service:
+        condition: service_started
+    environment:
+      SERVER_PORT: 8080
+      MAIN_SERVICE_URL: http://main-service:8081
+      REPORT_SERVICE_URL: http://report-service:8082
     ports:
       - "8080:8080"
 

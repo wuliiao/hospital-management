@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "Hospital Management Lab 2",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "gatewayUrl",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Create patient through gateway",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Петров Петр Петрович\",\n  \"diagnosis\": \"Грипп\",\n  \"treatment\": \"Жаропонижающее и наблюдение\",\n  \"admissionDate\": \"2026-09-11\"\n}"
+        },
+        "url": {
+          "raw": "{{gatewayUrl}}/api/patients",
+          "host": [
+            "{{gatewayUrl}}"
+          ],
+          "path": [
+            "api",
+            "patients"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get patients through gateway",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{gatewayUrl}}/api/patients",
+          "host": [
+            "{{gatewayUrl}}"
+          ],
+          "path": [
+            "api",
+            "patients"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get report list through gateway",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{gatewayUrl}}/api/reports/patients",
+          "host": [
+            "{{gatewayUrl}}"
+          ],
+          "path": [
+            "api",
+            "reports",
+            "patients"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get main service status report through gateway",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{gatewayUrl}}/api/patients/report",
+          "host": [
+            "{{gatewayUrl}}"
+          ],
+          "path": [
+            "api",
+            "patients",
+            "report"
+          ]
+        }
+      }
+    }
+  ]
+}

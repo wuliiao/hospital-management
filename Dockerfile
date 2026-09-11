@@ -1,11 +1,15 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 COPY pom.xml .
-COPY src ./src
-RUN mvn -q -DskipTests package
+COPY main-service ./main-service
+COPY report-service ./report-service
+COPY gateway-service ./gateway-service
+ARG MODULE
+RUN mvn -q -pl ${MODULE} -am -DskipTests package
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /app/target/hospital-management-0.0.1-SNAPSHOT.jar app.jar
+ARG MODULE
+COPY --from=build /app/${MODULE}/target/${MODULE}-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
